@@ -1,4 +1,4 @@
-package com.telegram.bot;
+package com.telegram.bot.servise;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,6 +1,6 @@
 package com.telegram.bot.bot;
 
-import com.telegram.bot.WeekDay;
+import com.telegram.bot.servise.WeekDay;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -64,7 +64,11 @@ public enum BotState {
     EndInputGroup(false) {
         @Override
         public void enter(BotContext context) {
-            sendMessage(context, "instruction");
+            try {
+                sendMessage(context, Files.readString(Path.of("config/instruction.txt")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -133,7 +137,7 @@ public enum BotState {
 
                 String result = Arrays.stream(WeekDay.values()).map(n -> {
                     try {
-                        return n + "\n" + Files.readString(fileNameMap.get(n + "").get(0)) + "\n\n";
+                        return n + "\n" + Files.readString(fileNameMap.get(n + "").get(0)) + "\n\n  ";
                     } catch (IOException | NullPointerException e) {
                         e.printStackTrace();
                         return "";
