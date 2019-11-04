@@ -112,6 +112,7 @@ public enum BotState {
             String url = "data/" + context.getUser().getGroupInUni() +
                     "/" + WeekDay.getWeekNumToPackage() + "/" + WeekDay.today() + ".txt";
             try {
+                System.out.println(url  );
                 sendMessage(context, Files.readString(Path.of(url)));
             } catch (IOException e) {
                 e.printStackTrace();
