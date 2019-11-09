@@ -16,12 +16,12 @@ public enum BotState {
     Start {
         @Override
         public void enter(BotContext context) {
-            sendMessage(context, "Hello!");
+            sendMessage(context, "Hello!\n Enter your group, use /group");
         }
 
         @Override
         public BotState nextState() {
-            return EnterGroup;
+            return Wait;
         }
     },
 
@@ -49,7 +49,8 @@ public enum BotState {
         private boolean checkGroupName(String groupName) {
             try {
                 return Files.walk(Path.of("data/")).filter(Files::isDirectory).map(Path::getFileName).map(Path::toString)
-                        .filter(n -> !n.equals("data")).collect(Collectors.toList()).contains(groupName);
+                        .filter(n -> !n.equals("data")).map(n -> n.equalsIgnoreCase(groupName))
+                        .reduce((aBoolean, aBoolean2) -> aBoolean || aBoolean2).get();
             } catch (IOException e) {
                 return false;
             }
@@ -100,6 +101,7 @@ public enum BotState {
                 case "/group":
                     next = EnterGroup;
                     break;
+                default:
             }
         }
 
@@ -112,7 +114,7 @@ public enum BotState {
             String url = "data/" + context.getUser().getGroupInUni() +
                     "/" + WeekDay.getWeekNumToPackage() + "/" + WeekDay.today() + ".txt";
             try {
-                System.out.println(url  );
+                System.out.println(url);
                 sendMessage(context, Files.readString(Path.of(url)));
             } catch (IOException e) {
                 e.printStackTrace();

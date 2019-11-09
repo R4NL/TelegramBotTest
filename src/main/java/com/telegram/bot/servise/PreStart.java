@@ -15,6 +15,7 @@ public final class PreStart {
         createDirectory("data");
         createFile("config/instruction.txt");
         createFile("config/startSemester.txt");
+        createFile("config/botToken.txt");
     }
 
     private final static void createFile(String fileName) {

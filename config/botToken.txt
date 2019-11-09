@@ -1,0 +1,2 @@
+token=1046321350:AAGsnll27wN3VSqU6vfxu3xUHsWNmZC83sw
+name=VidgukBot

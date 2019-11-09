@@ -7,13 +7,34 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
+
 @Component
 public class ChatBot extends TelegramLongPollingBot {
     @Autowired
     private UserJpaRepository userJpaRepository;
 
-    private final String botName = "TestBotPoweredByTheAlEShKA_bot";
-    private final String botToken = "1024273765:AAHPt9_EAB4Ylzre-I6DxBx8dk4XUp7lAns";
+    private final String botName;
+    private final String botToken;
+
+    {
+        String botNameInitializer = new String();
+        String botTokenInitializer = new String();
+
+        try {
+            botNameInitializer = Files.readAllLines(Path.of("config/botToken.txt")).stream().filter(n -> n.contains("name"))
+                    .map(s -> s.substring(s.indexOf("=") + 1)).collect(Collectors.joining());
+            botTokenInitializer = Files.readAllLines(Path.of("config/botToken.txt")).stream().filter(n -> n.contains("token"))
+                    .map(s -> s.substring(s.indexOf("=") + 1)).collect(Collectors.joining());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        botName = botNameInitializer;
+        botToken = botTokenInitializer;
+    }
 
     private BotState state;
     private BotContext context;

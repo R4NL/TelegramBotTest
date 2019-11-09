@@ -13,5 +13,6 @@ public class TestApplication {
         PreStart.createDirectories();
         ApiContextInitializer.init();
         SpringApplication.run(TestApplication.class, args);
+
     }
 }
